@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCP — Talent Roster</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh;padding:2rem 1rem}
+.container{max-width:1100px;margin:0 auto}
+header{margin-bottom:1.5rem}
+h1{font-size:20px;font-weight:500;color:#1a1a1a}
+.meta{font-size:12px;color:#999;margin-top:3px}
+.card{background:#fff;border-radius:12px;border:.5px solid #e0e0db;overflow:hidden}
+.toolbar{padding:14px 18px;border-bottom:.5px solid #e0e0db;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.lbl{font-size:12px;color:#999;margin-right:2px}
+.btn{padding:5px 13px;border-radius:999px;border:.5px solid #d0d0cb;background:transparent;font-size:12px;cursor:pointer;color:#666;transition:all .15s;font-family:inherit}
+.btn:hover{background:#f5f5f3;color:#1a1a1a}
+.btn.active{background:#f0efe8;color:#1a1a1a;border-color:#aaa;font-weight:500}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th{text-align:left;padding:9px 13px;font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:.05em;border-bottom:.5px solid #e0e0db;background:#fafaf8;white-space:nowrap}
+td{padding:10px 13px;border-bottom:.5px solid #f0f0ea;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafaf8}
+.tname{font-weight:500;font-size:13px}
+.tsub{font-size:11px;color:#999;margin-top:1px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:500;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.v-derm{background:#eaf3de;color:#3b6d11}
+.v-health{background:#e1f5ee;color:#0f6e56}
+.v-beauty{background:#fbeaf0;color:#993556}
+.v-lifestyle{background:#e8eef8;color:#2a4a8a}
+.v-comedy{background:#fef3e2;color:#a05c00}
+.v-food{background:#fdf1e8;color:#8a3a00}
+.v-family{background:#f0eafb;color:#5a2a8a}
+.v-fitness{background:#e2f4f8;color:#0a5a72}
+.v-other{background:#f0f0ea;color:#555}
+.v-social{background:#e8f5e1;color:#2a6a10}
+.plink{color:#185fa5;text-decoration:none;font-size:12px;display:block}
+.plink:hover{text-decoration:underline}
+.cnt{font-size:13px;font-weight:500;color:#1a1a1a;display:block;margin-top:1px}
+.cnt-hi{color:#185fa5}
+.cnt-na{font-size:11px;color:#bbb;display:block;margin-top:1px}
+.no-data{color:#ddd;font-size:13px}
+.col-name{width:17%}.col-v{width:15%}.col-ig{width:17%}.col-tt{width:17%}.col-yt{width:17%}.col-sc{width:17%}
+footer{margin-top:14px;font-size:11px;color:#bbb;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;padding:0 2px}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Cetaphil × Gushcloud · HCP</h1>
+    <p class="meta">14 talents · Last updated April 23, 2026</p>
+  </header>
+  <div class="card">
+    <div class="toolbar">
+      <span class="lbl">Sort by:</span>
+      <button class="btn active" onclick="sortBy('name')" id="btn-name">Name</button>
+      <button class="btn" onclick="sortBy('ig')" id="btn-ig">Instagram</button>
+      <button class="btn" onclick="sortBy('tt')" id="btn-tt">TikTok</button>
+      <button class="btn" onclick="sortBy('yt')" id="btn-yt">YouTube</button>
+      <button class="btn" onclick="sortBy('total')" id="btn-total">Total</button>
+    </div>
+    <div class="wrap">
+      <table>
+        <thead><tr>
+          <th class="col-name">Talent</th>
+          <th class="col-v">Vertical</th>
+          <th class="col-ig">Instagram</th>
+          <th class="col-tt">TikTok</th>
+          <th class="col-yt">YouTube</th>
+          <th class="col-sc">Snapchat</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  <footer>
+    <span>Cetaphil × Gushcloud Clique Now · HCP</span>
+    <span>Snapchat follower counts not publicly available</span>
+  </footer>
+</div>
+<script>
+const data = [
+  {name:'Dermguru',sub:'Dr. Lindsey Zubritsky',vertical:'Dermatologist',ig:{handle:"@dermguru",url:"https://instagram.com/dermguru",count:1700000},tt:{handle:"@dermguru",url:"https://tiktok.com/@dermguru",count:1700000},yt:null,sc:{handle:"@dermguru"}},
+  {name:'Dr. Bertha Baum',sub:'',vertical:'Dermatologist',ig:{handle:"@drberthabaum",url:"https://instagram.com/drberthabaum",count:263000},tt:null,yt:null,sc:null},
+  {name:'Dr. Charles',sub:'',vertical:'Dermatologist',ig:{handle:"@drcharlesmd",url:"https://instagram.com/drcharlesmd",count:829000},tt:{handle:"@drcharlesmd1",url:"https://tiktok.com/@drcharlesmd1",count:1800000},yt:null,sc:{handle:"@drcharlesmd"}},
+  {name:'Dr. Dray',sub:'Dr. Andrea Suarez',vertical:'Dermatologist',ig:{handle:"@drdrayzday",url:"https://instagram.com/drdrayzday",count:641000},tt:{handle:"@drdrayzday",url:"https://tiktok.com/@drdrayzday",count:669900},yt:{handle:"@drdrayzday",url:"https://youtube.com/@drdrayzday",count:2640000},sc:null},
+  {name:'Dr. Farzan',sub:'',vertical:'Dermatologist',ig:{handle:"@dr_farzans",url:"https://instagram.com/dr_farzans",count:251000},tt:{handle:"@dr.farzan",url:"https://tiktok.com/@dr.farzan",count:2000000},yt:null,sc:null},
+  {name:'Dr. Katie Beleznay',sub:'',vertical:'Dermatologist',ig:{handle:"@drkatiebeleznay",url:"https://instagram.com/drkatiebeleznay",count:216000},tt:{handle:"@drkatiebeleznay",url:"https://tiktok.com/@drkatiebeleznay",count:123800},yt:null,sc:{handle:"@drkatiebeleznay"}},
+  {name:'Dr. Maren Locke',sub:'',vertical:'Dermatologist',ig:{handle:"@thebudgetdermatologist",url:"https://instagram.com/thebudgetdermatologist",count:512000},tt:{handle:"@thebudgetdermatologist",url:"https://tiktok.com/@thebudgetdermatologist",count:71700},yt:{handle:"@thebudgetdermatologist",url:"https://youtube.com/@thebudgetdermatologist",count:716000},sc:null},
+  {name:'Dr. Mamina Turegano',sub:'',vertical:'Dermatologist',ig:{handle:"@dr.mamina",url:"https://instagram.com/dr.mamina",count:505000},tt:{handle:"@dr.mamina",url:"https://tiktok.com/@dr.mamina",count:1200000},yt:{handle:"@dr.mamina",url:"https://youtube.com/@dr.mamina",count:275000},sc:null},
+  {name:'Dr. Amy Shah',sub:'MD & Nutrition Expert',vertical:'Healthcare',ig:{handle:"@dramyshah",url:"https://instagram.com/dramyshah",count:2000000},tt:{handle:"@dramyshah",url:"https://tiktok.com/@dramyshah",count:133900},yt:{handle:"@dramyshah",url:"https://youtube.com/@dramyshah",count:17700},sc:null},
+  {name:'Dr. Joe',sub:'ER Doctor',vertical:'Healthcare',ig:{handle:"@drjoe_md",url:"https://instagram.com/drjoe_md",count:979000},tt:{handle:"@drjoe_md",url:"https://tiktok.com/@drjoe_md",count:2200000},yt:null,sc:null},
+  {name:'4complexion',sub:'Marina – Cosmetic Chemist',vertical:'Beauty/Skincare, Dermatologist',ig:{handle:"@4complexion",url:"https://instagram.com/4complexion",count:36600},tt:{handle:"@4complexion",url:"https://tiktok.com/@4complexion",count:220300},yt:{handle:"@4complexion160",url:"https://youtube.com/@4complexion160",count:25000},sc:null},
+  {name:'Steven Ho',sub:'',vertical:'Healthcare/Comedy',ig:{handle:"@steveioe",url:"https://instagram.com/steveioe",count:1400000},tt:{handle:"@steveioe",url:"https://tiktok.com/@steveioe",count:11600000},yt:{handle:"@steveioe",url:"https://youtube.com/@steveioe",count:3380000},sc:null},
+  {name:'Dr. Donovan',sub:'Donovan Smolich',vertical:'Healthcare/Fitness',ig:{handle:"@drdonovansmolich",url:"https://instagram.com/drdonovansmolich",count:443000},tt:{handle:"@drdonovan",url:"https://tiktok.com/@drdonovan",count:554700},yt:null,sc:null},
+  {name:'Dr. Tara',sub:'Sex & Relationship Expert',vertical:'Healthcare/Beauty/Lifestyle',ig:{handle:"@luvbites.co",url:"https://instagram.com/luvbites.co",count:234000},tt:{handle:"@luvbites.co",url:"https://tiktok.com/@luvbites.co",count:1900000},yt:{handle:"@luvbitesco",url:"https://youtube.com/@luvbitesco",count:60700},sc:{handle:"@luvbitesco"}}
+];
+
+function fmt(n){
+  if(!n&&n!==0)return null;
+  if(n>=1e6)return(n/1e6).toFixed(1).replace(/\.0$/,'')+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1).replace(/\.0$/,'')+'K';
+  return n.toString();
+}
+
+function vClass(v){
+  v=(v||'').toLowerCase();
+  if(v.includes('derm'))return'v-derm';
+  if(v.includes('health')||v.includes('hcp'))return'v-health';
+  if(v.includes('beauty')||v.includes('hair')||v.includes('skincare'))return'v-beauty';
+  if(v.includes('comedy'))return'v-comedy';
+  if(v.includes('food')||v.includes('bbq'))return'v-food';
+  if(v.includes('family'))return'v-family';
+  if(v.includes('fit'))return'v-fitness';
+  if(v.includes('lifestyle')||v.includes('fashion'))return'v-lifestyle';
+  if(v.includes('social')||v.includes('impact')||v.includes('entertainment'))return'v-social';
+  return'v-other';
+}
+
+function cell(p,hi){
+  if(!p)return'<span class="no-data">—</span>';
+  const link=`<a class="plink" href="${p.url}" target="_blank">${p.handle}</a>`;
+  const cnt=p.count?`<span class="cnt${hi?' cnt-hi':''}">${fmt(p.count)}</span>`:'<span class="cnt-na">—</span>';
+  return link+cnt;
+}
+
+function getVal(t,k){
+  if(k==='name')return t.name.toLowerCase();
+  if(k==='ig')return(t.ig&&t.ig.count)||-1;
+  if(k==='tt')return(t.tt&&t.tt.count)||-1;
+  if(k==='yt')return(t.yt&&t.yt.count)||-1;
+  if(k==='total')return((t.ig&&t.ig.count)||0)+((t.tt&&t.tt.count)||0)+((t.yt&&t.yt.count)||0);
+  return 0;
+}
+
+let cur='name';
+function sortBy(k){
+  cur=k;
+  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+k).classList.add('active');
+  render();
+}
+
+function render(){
+  const sorted=[...data].sort((a,b)=>cur==='name'?getVal(a,cur).localeCompare(getVal(b,cur)):getVal(b,cur)-getVal(a,cur));
+  const igH=cur==='ig',ttH=cur==='tt',ytH=cur==='yt';
+  document.getElementById('tbody').innerHTML=sorted.map(t=>`
+    <tr>
+      <td><div class="tname">${t.name}</div>${t.sub?`<div class="tsub">${t.sub}</div>`:''}</td>
+      <td><span class="badge ${vClass(t.vertical)}" title="${t.vertical}">${t.vertical}</span></td>
+      <td>${cell(t.ig,igH)}</td>
+      <td>${cell(t.tt,ttH)}</td>
+      <td>${cell(t.yt,ytH)}</td>
+      <td>${t.sc?`<span class="plink" style="cursor:default;color:#aaa">${t.sc.handle}</span>`:'<span class="no-data">—</span>'}</td>
+    </tr>`).join('');
+}
+render();
+</script>
+</body>
+</html>
